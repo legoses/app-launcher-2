@@ -9,7 +9,6 @@ int get_path_len(char *path) {
     int len = 0;
     
     while(path[i] != '\0') {
-        printf("%i\n", i);
         if(path[i] == ':') {
             len++; 
         }
@@ -31,46 +30,43 @@ struct individPath alloc_path(int i, int pathStart, char *path) {
 }
 
 
-struct pathObject gen_path_object(char *path) {
+struct pathObject* gen_path_object(char *path) {
     //char **paths;
-    struct pathObject paths;
-    paths.size =  get_path_len(path);
+    struct pathObject *paths = (struct pathObject*)malloc(sizeof(struct pathObject*));
+    paths->size =  get_path_len(path);
 
-    paths.paths = (struct individPath*)malloc(sizeof(struct individPath*) * paths.size); //allocate memory for number of found paths
+    paths->paths = (struct individPath*)malloc(sizeof(struct individPath*) * paths->size); //allocate memory for number of found paths
 
-    return paths;
-}
-
-void parse_paths(struct pathObject *pathObj, char *path) {
     int curPath = 0;
 
     int i = 0; //loop location
     int pathStart = 0; //start of current path
 
+    printf("Path size: %i\n", paths->size);
     //loop loop through path
     while(path[i] != '\0') {
+        printf("%i\n", i);
         //printf("%c", path[i]);
         //printf
-        if((path[i] == ':') || (path[i] == ' ')) {
-            pathObj->paths[curPath] = alloc_path(i, pathStart, path); //allocate memory for indivudal paths
-            printf("%s\n", pathObj->paths[curPath].size);
+        if((path[i] == ':') || (path[i] == ' ')) { //match seperator in bash and fish
+            paths->paths[curPath] = alloc_path(i, pathStart, path); //allocate memory for indivudal paths
+            printf("%s\n", paths->paths[curPath].size);
             pathStart = i+1;
             curPath++;
         } 
         i++;
     }
-    printf("\n");
-    
+
+    return paths;
 }
 
 
 int main() {
     char *path = getenv("PATH");
     //char **parsedPaths = parse_path(path);
-    struct pathObject paths = gen_path_object(path);
-    parse_paths(&paths, path);
+    struct pathObject *paths = gen_path_object(path);
 
-    printf("%s\n", paths.paths[0].path);
+    printf("%s\n", paths->size);
 
     return 0;
 }
