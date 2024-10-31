@@ -62,10 +62,10 @@ struct pathObject* gen_path_object(char *path) {
 
 int main() {
     char *path = getenv("PATH");
-    //char **parsedPaths = parse_path(path);
     struct pathObject *paths = gen_path_object(path);
 
-    //printf("%s\n", paths->size);
+    //make make sort of cache for faster searching?
+    //find a way to get user input asyncrounsly
 
     return 0;
 }
