@@ -8,7 +8,7 @@ struct individPath {
 };
 
 struct pathObject {
-    struct individPath *paths;
+    struct individPath **paths;
     int size;
 };
 
